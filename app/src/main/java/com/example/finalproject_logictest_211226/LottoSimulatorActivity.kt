@@ -100,7 +100,7 @@ class LottoSimulatorActivity : BaseActivity() {
                 binding.btnAutoMode.text = "자동 구매 중단하기"
             }
             else{
-//                이미 자동 구매 진행 중 > 반복 중단
+//                이미 자동 구매 진행 중 > 반복 중단`
 //                다음 할 일(구매 프로세스) 로 등록된 Runnable을 제거
 
                 myHandler.removeCallbacks(buyLottoRunnable)
