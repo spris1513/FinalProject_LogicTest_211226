@@ -3,6 +3,7 @@ package com.example.finalproject_logictest_211226
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.example.finalproject_logictest_211226.databinding.ActivityLottoSimulatorBinding
 
@@ -15,6 +16,9 @@ class LottoSimulatorActivity : BaseActivity() {
 
     //    랜덤 당첨번호 목록 > 나중에 6개를 채워야 함.
     val winNumBerList = ArrayList<Int>()
+
+//    당첨번호를 표시할 텍스트뷰 목록 > xml의 텍스트뷰 목록
+    val winNumberTxtList = ArrayList<TextView>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +76,26 @@ class LottoSimulatorActivity : BaseActivity() {
 
         }
 
-//        6개의 당첨번호를 로그로 확인
-        for (winNum in winNumBerList){
-            Log.d("당첨번호",winNum.toString())
+//        당첨번호 6개를 > 작은수 > 큰수(오름차순) 정렬
+
+        winNumBerList.sort()
+
+//        6개의 당첨번호를 로그로 확인 + 텍스트뷰에 반영
+        winNumBerList.forEachIndexed { index, winNum ->
+            winNumberTxtList[index].text = winNum.toString()
         }
 
     }
 
     override fun setValues() {
+
+//        텍스트뷰 6개를 목록에 추가
+        winNumberTxtList.add(binding.txtWinNum1)
+        winNumberTxtList.add(binding.txtWinNum2)
+        winNumberTxtList.add(binding.txtWinNum3)
+        winNumberTxtList.add(binding.txtWinNum4)
+        winNumberTxtList.add(binding.txtWinNum5)
+        winNumberTxtList.add(binding.txtWinNum6)
 
     }
 }
