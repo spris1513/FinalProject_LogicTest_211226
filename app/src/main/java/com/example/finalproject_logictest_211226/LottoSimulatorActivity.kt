@@ -21,6 +21,9 @@ class LottoSimulatorActivity : BaseActivity() {
     //    랜덤 당첨번호 목록 > 나중에 6개를 채워야 함.
     val winNumBerList = ArrayList<Int>()
 
+//    보너스 번호도 뽑아야함
+    var bonusNum = 0 // Int 라고 명시.
+
     //    당첨번호를 표시할 텍스트뷰 목록 > xml의 텍스트뷰 목록
     val winNumberTxtList = ArrayList<TextView>()
 
@@ -158,6 +161,21 @@ class LottoSimulatorActivity : BaseActivity() {
 
         }
 
+//        보너스 번호도 추첨해야함.
+//        1~45 랜덤, 하나만 추첨
+//        제약 : 기존에 뽑아둔 당첨번호화 중복되면 안됨.
+
+//        무한반복 > 괜찮은 보너스 번호가 나오면 추첨 종료
+
+        while (true){
+            val randomNum = (Math.random()*45+1).toInt()
+            val isDuplOk = !winNumBerList.contains(randomNum)
+            if (isDuplOk){
+                bonusNum = randomNum
+                break
+            }
+        }
+
 //        당첨번호 6개를 > 작은수 > 큰수(오름차순) 정렬
 
         winNumBerList.sort()
@@ -166,6 +184,9 @@ class LottoSimulatorActivity : BaseActivity() {
         winNumBerList.forEachIndexed { index, winNum ->
             winNumberTxtList[index].text = winNum.toString()
         }
+
+//        보너스번호도 텍스트뷰에 반영.
+        binding.txtBonusNum.text = bonusNum.toString()
 
     }
 
