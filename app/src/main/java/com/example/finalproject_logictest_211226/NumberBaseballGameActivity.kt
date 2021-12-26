@@ -2,6 +2,7 @@ package com.example.finalproject_logictest_211226
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finalproject_logictest_211226.adapters.ChatAdapter
@@ -86,6 +87,11 @@ class NumberBaseballGameActivity : BaseActivity() {
 
             }
 
+        }
+
+//        문제 확인용 로그
+        for ( num in cpuNumbers){
+            Log.d("문제숫자",cpuNumbers.toString())
         }
 
     }
