@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.finalproject_logictest_211226.databinding.ActivityLottoSimulatorBinding
 
@@ -61,6 +62,21 @@ class LottoSimulatorActivity : BaseActivity() {
         }
 
 //        correctCount 에 몇개를 맞춰ㅆ는지 기록되어있다. > 등수 판단을 하자
+        if (correctCount == 6){
+            Toast.makeText(mContext, "1등", Toast.LENGTH_SHORT).show()
+        }
+        else if (correctCount == 5){
+            Toast.makeText(mContext, "임시 - 3등", Toast.LENGTH_SHORT).show()
+        }
+        else if (correctCount ==4){
+            Toast.makeText(mContext, "4등", Toast.LENGTH_SHORT).show()
+        }
+        else if (correctCount == 3){
+            Toast.makeText(mContext, "5등", Toast.LENGTH_SHORT).show()
+        }
+        else{
+            Toast.makeText(mContext, "낙첨", Toast.LENGTH_SHORT).show()
+        }
 
     }
 
