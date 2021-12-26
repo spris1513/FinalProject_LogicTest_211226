@@ -23,13 +23,13 @@ class LottoSimulatorActivity : BaseActivity() {
     //    랜덤 당첨번호 목록 > 나중에 6개를 채워야 함.
     val winNumBerList = ArrayList<Int>()
 
-//    보너스 번호도 뽑아야함
+    //    보너스 번호도 뽑아야함
     var bonusNum = 0 // Int 라고 명시.
 
     //    당첨번호를 표시할 텍스트뷰 목록 > xml의 텍스트뷰 목록
     val winNumberTxtList = ArrayList<TextView>()
 
-//    각 등수별 당첨 횟수를 기록
+    //    각 등수별 당첨 횟수를 기록
     var rankCount1 = 0
     var rankCount2 = 0
     var rankCount3 = 0
@@ -37,23 +37,26 @@ class LottoSimulatorActivity : BaseActivity() {
     var rankCount5 = 0
     var rankCountNone = 0
 
-//    소지금액 / 당첨금액
+    //    소지금액 / 당첨금액
     var myMoney = 10000000  // 1천만원 > 0원까지.
     var earnMoney = 0L  // 0을대입 : Int 다. 10억단위 숫자도 표현하려고 Long 으로 대입.
 
+    //    지금 자동구매가 진행중인지 기록해 둘 변수
+    var isAutoNow = false
+
 //    Handler를 이용해서 한번 구매 후 다음 할일로 다시 구매를 등록하는 방식
 
-    lateinit var myHandler : Handler
+    lateinit var myHandler: Handler
 
 //    로또 한장을 구매하는 프로세스를 > 핸들러가 처리할 수 있는 일로써 보관(할 일이 뭔지 보관) : Runnable
 
-    val buyLottoRunnable = object : Runnable{
+    val buyLottoRunnable = object : Runnable {
         override fun run() {
 
 //            나중에 실행해 줄 코드 작성
 
 //            내가 쓸 수 있는 돈이 남아있다면 > 로또구매 > 다시구매
-            if (myMoney > 0){
+            if (myMoney > 0) {
                 makeWinNumbers()
                 checkLottoRank()
 
@@ -62,8 +65,9 @@ class LottoSimulatorActivity : BaseActivity() {
 
             }
 //            돈이 없다면 반복 종료
-            else{
-                Toast.makeText(this@LottoSimulatorActivity, "자동 구매를 중단합니다.", Toast.LENGTH_SHORT).show()
+            else {
+                Toast.makeText(this@LottoSimulatorActivity, "자동 구매를 중단합니다.", Toast.LENGTH_SHORT)
+                    .show()
 //                추가 코드 작성 X > 이 코드가 끝나고 할 일을 다시 등록하지 않는다 > 반복 종료
             }
 
@@ -79,14 +83,29 @@ class LottoSimulatorActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
-        
-        binding.btnAutoMode.setOnClickListener { 
-            
-//              반복구매 프로세스를 변수에 저장해둠(buyLottoRunnable)
+
+        binding.btnAutoMode.setOnClickListener {
+
+//            자동구매가 돌고있지 않을 때 > 시작
+
+            if (!isAutoNow) {
+                //              반복구매 프로세스를 변수에 저장해둠(buyLottoRunnable)
 //            myHandler가 해당 프로세스를 시작하도록
 
-            myHandler.post(buyLottoRunnable)
-            
+                myHandler.post(buyLottoRunnable)
+
+                isAutoNow = true
+            }
+            else{
+//                이미 자동 구매 진행 중 > 반복 중단
+//                다음 할 일(구매 프로세스) 로 등록된 Runnable을 제거
+
+                myHandler.removeCallbacks(buyLottoRunnable)
+
+                isAutoNow = false
+            }
+
+
         }
 
         binding.btnBuyLotto.setOnClickListener {
@@ -128,43 +147,40 @@ class LottoSimulatorActivity : BaseActivity() {
 //            Toast.makeText(mContext, "1등", Toast.LENGTH_SHORT).show()
             rankCount1++
             earnMoney += 2000000000 // 번돈을 20억 증가
-        }
-        else if (correctCount == 5) {
+        } else if (correctCount == 5) {
 //            보너스번호 추가 검사
 //            보너스 번호가 > 내 숫자 안에 들어있는가? 들어있다면, 맞춘상황
 
-            if(myNumberList.contains(bonusNum)){
+            if (myNumberList.contains(bonusNum)) {
 //                2등!
                 rankCount2++
-                earnMoney+= 50000000 // 번 돈을 5천만원 증가가
-           }
-            else{
+                earnMoney += 50000000 // 번 돈을 5천만원 증가가
+            } else {
 //                3등
                 rankCount3++
                 earnMoney += 1500000 // 번 돈을 150만원 증가
             }
 
-        }
-        else if (correctCount == 4) {
+        } else if (correctCount == 4) {
             rankCount4++
             earnMoney += 50000 // 번 돈을 5만원 증가
-        }
-        else if (correctCount == 3) {
+        } else if (correctCount == 3) {
             rankCount5++
 //            돈으로 받지 않는다. > 내 돈 (로또 구매 자금)을 5천원 증가
 //            당첨금액은 늘리지 않는다.
 
             myMoney += 5000 // 로또 5천원 추가 구매
 
-        }
-        else {
+        } else {
             rankCountNone++
 //            낙첨은 자금 변동 없다.
         }
 
 //        자금 변동사항도 텍스트뷰에 반영
-        binding.txtMyMoney.text = "소지 금액 : ${NumberFormat.getInstance(Locale.KOREA).format(myMoney)}원"
-        binding.txtEarnMoney.text = "당첨 금액 : ${NumberFormat.getInstance(Locale.KOREA).format(earnMoney)}원"
+        binding.txtMyMoney.text =
+            "소지 금액 : ${NumberFormat.getInstance(Locale.KOREA).format(myMoney)}원"
+        binding.txtEarnMoney.text =
+            "당첨 금액 : ${NumberFormat.getInstance(Locale.KOREA).format(earnMoney)}원"
 
 //        새로 변경된 당첨횟수들을 텍스트뷰에 반영
         binding.txtRankCount1.text = "1등 : ${rankCount1}회"
@@ -220,10 +236,10 @@ class LottoSimulatorActivity : BaseActivity() {
 
 //        무한반복 > 괜찮은 보너스 번호가 나오면 추첨 종료
 
-        while (true){
-            val randomNum = (Math.random()*45+1).toInt()
+        while (true) {
+            val randomNum = (Math.random() * 45 + 1).toInt()
             val isDuplOk = !winNumBerList.contains(randomNum)
-            if (isDuplOk){
+            if (isDuplOk) {
                 bonusNum = randomNum
                 break
             }
