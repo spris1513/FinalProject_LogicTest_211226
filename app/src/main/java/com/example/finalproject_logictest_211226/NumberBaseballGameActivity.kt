@@ -120,6 +120,11 @@ class NumberBaseballGameActivity : BaseActivity() {
         mChatList.add(cpuChat)
         mAdapter.notifyDataSetChanged()
 
+//        리싸이클러뷰를 최하단으로 스크롤 > 밑의 채팅들도 보이도록.
+
+//        10개의 채팅 > 0번채팅 ~ 9번채팅 > 마지막 포지션 : 9 > 목록 갯수 -1
+        binding.chattingRecyclerView.smoothScrollToPosition(mChatList.size - 1)
+
 //        혹시 정답인지?
         if(strikeCount ==3){
 
