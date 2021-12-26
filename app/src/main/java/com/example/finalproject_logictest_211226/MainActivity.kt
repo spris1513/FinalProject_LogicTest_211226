@@ -1,5 +1,6 @@
 package com.example.finalproject_logictest_211226
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
@@ -17,6 +18,20 @@ class MainActivity : BaseActivity() {
     }
 
     override fun setupEvents() {
+
+        binding.btnLottoSimulator.setOnClickListener {
+
+            val myIntent = Intent(mContext,LottoSimulatorActivity::class.java)
+            startActivity(myIntent)
+
+        }
+
+        binding.btnNumberBaseballGame.setOnClickListener {
+
+            val myIntent = Intent(mContext,NumberBaseballGameActivity::class.java)
+            startActivity(myIntent)
+
+        }
 
     }
 
