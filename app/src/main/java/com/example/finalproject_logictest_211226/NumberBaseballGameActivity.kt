@@ -45,7 +45,21 @@ class NumberBaseballGameActivity : BaseActivity() {
 //            숫자 입력칸 비워주기
             binding.edtNumber.setText("")
 
+//            ?S ?B > 계산해서 알려주기
+            checkStrikeAndBall()
         }
+
+    }
+
+    fun checkStrikeAndBall( inputMessage : String ){
+
+//        String > 입력 문구를 3칸 목록으로 변경 "123" > 123 > [1, 2, 3]
+
+        val inputNumber = inputMessage.toInt()
+
+//        123 > [1, 2, 3] 목록으로.
+
+
 
     }
 
@@ -91,7 +105,7 @@ class NumberBaseballGameActivity : BaseActivity() {
 
 //        문제 확인용 로그
         for ( num in cpuNumbers){
-            Log.d("문제숫자",cpuNumbers.toString())
+            Log.d("문제숫자",num.toString())
         }
 
     }
